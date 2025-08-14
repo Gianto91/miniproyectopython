@@ -8,10 +8,12 @@ def step_set_base(context, base_url):
 
 @when('hago una solicitud GET a "{endpoint}"')
 def step_get(context, endpoint):
-    context.response = session.get(context.base_url + endpoint)
+    context.response = session.get(context.base_url + endpoint, verify=False)
 
 @then('el código de respuesta debe ser {status_code:d}')
 def step_status(context, status_code):
+    print("Status code recibido:", context.response.status_code)
+    print("Body recibido:", context.response.text)
     allure.attach(str(context.response.text), name="response_body", attachment_type=allure.attachment_type.JSON)
     assert context.response.status_code == status_code
 
